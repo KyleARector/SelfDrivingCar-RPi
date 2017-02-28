@@ -27,6 +27,11 @@ int main(int argc,char ** argv)
             cerr << "ERROR: Unable to grab from the camera" << endl;
             break;
         }
+        // Invert the captured frame
+        // Used if the camera is mounted upside down from mirror
+        // 1 = flip y; 0 = flip x; -1 = flip both
+        flip(frame, frame, -1);
+
         imshow("Stream",frame);
         int key = cv::waitKey(5);
         key = (key==255) ? -1 : key;
