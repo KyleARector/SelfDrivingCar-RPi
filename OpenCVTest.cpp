@@ -19,6 +19,11 @@ int main(int argc,char ** argv)
         return 0;
     }
 
+    // Set the capture to 60 FPS, 720p
+    cap.set(CV_CAP_PROP_FPS, 60);
+    cap.set(CV_CAP_PROP_FRAME_WIDTH, 1280);
+    cap.set(CV_CAP_PROP_FRAME_HEIGHT , 720);
+
     Mat frame;
     cout << "Start grabbing, press a key on Live window to terminate" << endl;
     while(1) {
@@ -32,6 +37,9 @@ int main(int argc,char ** argv)
         // 1 = flip y; 0 = flip x; -1 = flip both
         flip(frame, frame, -1);
 
+        // Allow window to be resized
+        namedWindow("Stream", WINDOW_NORMAL);
+        // Populate window with frame data
         imshow("Stream",frame);
         int key = cv::waitKey(5);
         key = (key==255) ? -1 : key;
