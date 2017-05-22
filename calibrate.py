@@ -1,11 +1,12 @@
 import os
+import sys
 import pickle
 import cv2
 import numpy as np
-import matplotlib.pyplot as plt
-import matplotlib.image as mpimg
 
 
+# Load images from supplied path
+# Need to check if type is valid
 def load_images(file_path="camera_cal"):
     images = []
     for filename in os.listdir(file_path):
@@ -40,9 +41,17 @@ def calibrate_camera(nx=9, ny=6):
 
 
 def main():
-    objpoints, imgpoints = calibrate_camera()
+    # Get the command line arguments, if existant
+    img_folder = str(sys.argv[1]) if len(sys.argv) > 1 else "camera_cal"
+    out_file = str(sys.argv[2]) if len(sys.argv) > 2 else "calibration_data.p"
+    # Append appropriate file type, if missing
+    if out_file[-4:] != ".p":
+        outfile += ".p"
+    # Calibrate the camera based on supplied image folder
+    objpoints, imgpoints = calibrate_camera(img_folder)
+    # Package points and save for distortion correction in pipeline
     pickle.dump({"objpoints": objpoints, "imgpoints": imgpoints},
-                open("calibration_data.p", "wb"))
+                open(out_file, "wb"))
 
 
 if __name__ == "__main__":
